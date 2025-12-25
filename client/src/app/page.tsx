@@ -89,7 +89,7 @@ export default function Home() {
 
       console.log('Sending payload:', JSON.stringify(payload, null, 2));
 
-      const response = await fetch('http://localhost:8000/api/pdf/sign', {
+      const response = await fetch(`https://ass5-full.onrender.com/api/pdf/sign`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -101,7 +101,7 @@ export default function Home() {
       console.log('Server response:', data);
 
       if (response.ok) {
-        setSignedPdfUrl(`http://localhost:8000${data.fileUrl}`);
+        setSignedPdfUrl(`https://ass5-full.onrender.com${data.fileUrl}`);
       } else {
         console.error('Sign Error:', data);
         alert('Error signing PDF: ' + (data.message || 'Unknown error'));
