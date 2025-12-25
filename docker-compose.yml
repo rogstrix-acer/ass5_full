@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  # MongoDB Service
+  mongo:
+    image: mongo:latest
+    container_name: pdf-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  # Server Service
+  server:
+    build: ./server
+    container_name: pdf-server
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - MONGODB_URI=mongodb://mongo:27017/pdf-signature
+    depends_on:
+      - mongo
+    volumes:
+      - ./server/uploads:/app/uploads
+
+  # Client Service
+  client:
+    build: ./client
+    container_name: pdf-client
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    depends_on:
+      - server
+
+volumes:
+  mongo-data:
